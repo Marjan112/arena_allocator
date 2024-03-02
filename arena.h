@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct {
     size_t size;
@@ -17,25 +18,19 @@ void arena_reset(Arena* arena);
 
 #else
 
-Arena* arena_make(size_t size) {
-    Arena* allocator = (Arena*)malloc(sizeof(Arena));
-    if(allocator == NULL) {
-        return NULL;
+bool arena_make(Arena* arena, size_t size) {
+    arena->mem = malloc(size);
+    if(arena->mem == NULL) {
+        return false;
     }
 
-    allocator->mem = malloc(size);
-    if(allocator->mem == NULL) {
-        return NULL;
-    }
-
-    allocator->size = size;
-    allocator->pos = 0;
-    return allocator;
+    arena->size = size;
+    arena->pos = 0;
+    return true;
 }
 
 void arena_free(Arena* arena) {
     free(arena->mem);
-    free(arena);
 }
 
 void* arena_alloc(Arena* arena, size_t size) {
