@@ -11,7 +11,7 @@ typedef struct {
 
 #ifndef ARENA_IMPLEMENTATION
 
-Arena* arena_make(size_t size);
+bool arena_make(Arena* arena, size_t size);
 void arena_free(Arena* arena);
 void* arena_alloc(Arena* arena, size_t size);
 void arena_reset(Arena* arena);
